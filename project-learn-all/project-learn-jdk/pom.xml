@@ -19,7 +19,6 @@
 				<configuration>
 					<reportOutputDirectory>../javadocs</reportOutputDirectory>
 					<destDir>jdk</destDir>
-					<encoding>${maven.compiler.encoding}</encoding>
 				</configuration>
 			</plugin>
 		</plugins>

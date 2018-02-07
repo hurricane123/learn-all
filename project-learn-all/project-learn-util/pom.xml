@@ -6,35 +6,9 @@
 		<artifactId>project-learn-all</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
-	<artifactId>project-learn-web</artifactId>
-	<packaging>war</packaging>
+	<artifactId>project-learn-util</artifactId>
+
 	<dependencies>
-		<dependency>
-			<groupId>jstl</groupId>
-			<artifactId>jstl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>jsp-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-webmvc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -47,7 +21,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<configuration>
 					<reportOutputDirectory>../javadocs</reportOutputDirectory>
-					<destDir>web</destDir>
+					<destDir>util</destDir>
 				</configuration>
 			</plugin>
 		</plugins>
