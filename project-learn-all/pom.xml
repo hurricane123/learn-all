@@ -8,6 +8,10 @@
 	</parent>
 	<artifactId>project-learn-all</artifactId>
 	<packaging>pom</packaging>
+	<properties>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 	<dependencies>
 		<dependency>
 			<groupId>com.hurricane.learn</groupId>
@@ -28,6 +32,16 @@
 				<configuration>
 					<port>8080</port>
 					<path>/</path>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.9.1</version>
+				<configuration>
+					<reportOutputDirectory>../javadocs</reportOutputDirectory>
+					<destDir>web</destDir>
+					<encoding>${maven.compiler.encoding}</encoding>
 				</configuration>
 			</plugin>
 		</plugins>
