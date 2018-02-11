@@ -1,18 +1,17 @@
 package com.hurricane.learn.jdk.socket.aio;
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.StandardSocketOptions;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.Random;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Client implements Runnable{
 	private static int PORT;
-	private static Logger logger = Logger.getLogger(Server.class);
+	private static Logger logger = LoggerFactory.getLogger(Server.class);
 	private static AsynchronousSocketChannel  socketChannel;
 	public Client(int clientPort) throws Exception {
 		socketChannel = AsynchronousSocketChannel.open();
@@ -27,8 +26,9 @@ public class Client implements Runnable{
 			try {
 				logger.info("客户端开始向服务端写入数据");
 				ByteBuffer buffer = ByteBuffer.allocate(1024);
-				buffer.wrap("来自客户端的信息".getBytes());
-//				buffer.flip();
+//				buffer.wrap("来自客户端的信息".getBytes());
+				buffer.put("来自客户端的信息".getBytes());
+				buffer.flip();
 				socketChannel.write(buffer, null, new WriteCompleteHandler());
 				ByteBuffer getBuffer = ByteBuffer.allocate(1024);
 				socketChannel.read(getBuffer, getBuffer, new ReadCompleteHandler());

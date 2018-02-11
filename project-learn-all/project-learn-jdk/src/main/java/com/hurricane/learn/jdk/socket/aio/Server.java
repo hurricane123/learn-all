@@ -5,16 +5,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Server implements Runnable{
 	private AsynchronousServerSocketChannel serverSocketChannel;
 	private static int PORT;
-	private static Logger logger = Logger.getLogger(Server.class);
+	private static Logger logger = LoggerFactory.getLogger(Server.class);
 	private static int count = 0;
 	public Server(int serverPort) {
 		PORT = serverPort;
@@ -40,10 +38,10 @@ public class Server implements Runnable{
 		@Override
 		public void completed(AsynchronousSocketChannel result,
 				String attachment) {
+			logger.info("服务器端接受到一个连接请求,这是第"+count+"个操作,请求码为"+attachment);
 			count++;
 			logger.info("让服务器再去接收其他的请求");
-			serverSocketChannel.accept("aaa"+count, new AcceptHandler());
-			logger.info("服务器端接受到一个连接请求,这是第"+count+"个操作,请求码为"+attachment);
+			serverSocketChannel.accept("aaa"+count, this);
 			ByteBuffer buffer = ByteBuffer.allocate(1024);
 			result.read(buffer, buffer, new ReadHandler(result));
 //			try {
@@ -73,6 +71,10 @@ public class Server implements Runnable{
 			attachment.get(buffer,0,attachment.limit());
 			String string = new String(buffer);
 			logger.info("内容为："+string);
+//			attachment.flip();
+			String msg = "来自服务器端的响应";
+			attachment.clear();
+			attachment.put(msg.getBytes());
 			attachment.flip();
 			socketChannel.write(attachment, socketChannel, new WriteHandler(attachment));
 		}
@@ -95,8 +97,12 @@ public class Server implements Runnable{
 			if (buffer.hasRemaining()) {
 				logger.info("上一次未完成发送的内容，继续发送");
 				attachment.write(buffer, attachment, new WriteHandler(buffer));
+			}else{
+				logger.info("写回客户端成功");
+				ByteBuffer buffer = ByteBuffer.allocate(1024);
+				logger.info("让服务端继续读取来自这个客户端的消息");
+				attachment.read(buffer, buffer, new ReadHandler(attachment));
 			}
-			logger.info("写回客户端成功");
 		}
 
 		@Override
